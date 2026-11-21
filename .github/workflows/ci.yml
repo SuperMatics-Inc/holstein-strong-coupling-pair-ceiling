@@ -62,7 +62,12 @@ jobs:
             'WEIGHTED_2AB_CURVE: 5 rational points certified'; do
             grep -qF "$marker" /tmp/replay.out
           done
+          set +e
           python replay/replay.py --mutants > /tmp/mutants.out 2> /tmp/mutants.err
+          echo "MUTANTS_EXIT=$?"
+          set -e
+          echo "--- mutants.out"; cat -A /tmp/mutants.out | tail -25
+          echo "--- mutants.err"; head -20 /tmp/mutants.err
           test ! -s /tmp/mutants.err
           test "$(grep -c '^REJECTED ' /tmp/mutants.out)" -eq 12
           grep -qF 'REJECTED c-5800-all-below-threshold:' /tmp/mutants.out
