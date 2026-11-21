@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: Please cite the preprint and this replay supplement.
+title: 'Replay supplement for A strong-coupling ceiling of 6000 t^2/U for electronic pair correlations in the two-dimensional Holstein model'
+authors:
+  - family-names: Rens
+    given-names: Davis
+    affiliation: SuperMatics Inc.
+    orcid: 'https://orcid.org/0000-0001-5839-5197'
+doi: 10.5281/zenodo.24414618
+version: 1.0.0
+date-released: 2026-11-21
+license: MIT
+references:
+  - type: article
+    status: preprint
+    title: 'A strong-coupling ceiling of 6000 t^2/U for electronic pair correlations in the two-dimensional Holstein model'
+    authors:
+      - family-names: Rens
+        given-names: Davis
+        affiliation: SuperMatics Inc.
+        orcid: 'https://orcid.org/0000-0001-5839-5197'
+    year: 2026
+    doi: 10.5281/zenodo.24414616
+    license: CC-BY-4.0
+  - type: article
+    status: preprint
+    title: 'A fourth-power strong-coupling ceiling for electronic pair clustering on hypercubic lattices in three and more dimensions'
+    authors:
+      - family-names: Rens
+        given-names: Davis
+        affiliation: SuperMatics Inc.
+        orcid: 'https://orcid.org/0000-0001-5839-5197'
+    year: 2026
+    doi: 10.5281/zenodo.24412193
+  - type: article
+    status: preprint
+    title: 'Strong-coupling suppression of electronic pair order in the Holstein model, uniformly in phonon frequency and without a hopping cutoff'
+    authors:
+      - family-names: Rens
+        given-names: Davis
+        affiliation: SuperMatics Inc.
+        orcid: 'https://orcid.org/0000-0001-5839-5197'
+    year: 2026
+    doi: 10.5281/zenodo.24380128

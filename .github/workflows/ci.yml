@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Replay the certificate program on the release archive
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # The pinned sources are the reviewed bytes; the manifest protects them.
+      - name: Pinned sources match the review
+        run: |
+          sha256sum replay/replay.py | grep -q '^3449ce2455935b29c03616cb3c3ed70018903d9ce32d59f0d1b27f93dfe7f62f  replay/replay.py$'
+          sha256sum replay/README.md | grep -q '^93ceaf7df8384a35e382ea140c2ce49d18e8d05e5a5869fa9f7163dc46324a20  replay/README.md$'
+
+      - name: Both manifests verify
+        run: |
+          sha256sum -c MANIFEST.sha256
+          (cd replay && sha256sum -c MANIFEST.sha256)
+
+      - name: The manifest covers every tracked file
+        run: |
+          git ls-files | grep -vx 'MANIFEST.sha256' | sort > /tmp/tracked.txt
+          grep -v '^\s*$' MANIFEST.sha256 | sed -E 's/^[0-9a-f]{64}  //' | sort > /tmp/manifested.txt
+          diff -u /tmp/tracked.txt /tmp/manifested.txt
+      - name: Build the release archive and unpack it
+        run: |
+          git archive --format=zip --prefix=holstein-strong-coupling-pair-ceiling-1.0.0/ \
+            --output=/tmp/release.zip HEAD
+          mkdir /tmp/unpacked
+          unzip -q /tmp/release.zip -d /tmp/unpacked
+          tracked="$(git ls-files | wc -l)"
+          cd /tmp/unpacked/holstein-strong-coupling-pair-ceiling-1.0.0
+          test "$(find . -type f | wc -l)" -eq "$tracked"
+          sha256sum -c MANIFEST.sha256
+          (cd replay && sha256sum -c MANIFEST.sha256)
+          python replay/replay.py > /tmp/replay.out 2> /tmp/replay.err
+          test ! -s /tmp/replay.err
+          test "$(wc -l < /tmp/replay.out)" -eq 7
+          for marker in \
+            '16STATE_HALF_FILLING: S_JW*T_e*S_JW==B_e, 5-sector traces & 2 supremum rational identities verified' \
+            'PE_INTERVALS: 22 class bounds certified across 102 adaptive outward Fraction intervals' \
+            'A_pair=57/500' \
+            'C=6000' \
+            'C=4500' \
+            'S_tot<=0.105268 <= lnB>=0.107957' \
+            'UNCONDITIONAL_CURVE: 10 rational points' \
+            'WEIGHTED_2AB_CURVE: 5 rational points certified'; do
+            grep -qF "$marker" /tmp/replay.out
+          done
+          python replay/replay.py --mutants > /tmp/mutants.out 2> /tmp/mutants.err
+          test ! -s /tmp/mutants.err
+          test "$(grep -c '^REJECTED ' /tmp/mutants.out)" -eq 12
+          grep -qF 'REJECTED c-5800-all-below-threshold:' /tmp/mutants.out
+          grep -qF 'REJECTED c-4300-even-below-threshold:' /tmp/mutants.out
+          tail -n 1 /tmp/mutants.out | grep -qxF 'CERTIFIED: all 12 mutants rejected with exit 1'
+
+      - name: Public prose safeguards
+        run: |
+          if git grep -nE '—|D:/|C:/|/scratch/|ceiling-20261118|MASSIVE|STRONG-PAPER|RESERVED|reserved DOI' \
+              -- . ':!.github/workflows/ci.yml'; then
+            echo "hardcoded path, draft or review marker in a released file"; exit 1
+          fi
+          test "$(find . -path ./.git -prune -o -type f -iname '*review*' -print)" = ""
+
+  paper:
+    name: Verify the released PDF and its text
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poppler
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - name: Released bytes match the review
+        run: |
+          sha256sum paper/main.pdf | grep -q '^bf0b5b56805fa8d2f0c2f806d962fa3b26fc5ea0668445591b28a78973897fab  paper/main.pdf$'
+          sha256sum paper/main.tex | grep -q '^cf7576c78a115caec8e6280b096d9a0ca8669ef2373eee7020fc41b2332021a2  paper/main.tex$'
+          sha256sum paper/refs.bib | grep -q '^1722f3c080ba4bd4ff397f65bcb0978437ec35df0129b407c40016bc09cfec17  paper/refs.bib$'
+          sha256sum replay/replay.py | grep -q '^3449ce2455935b29c03616cb3c3ed70018903d9ce32d59f0d1b27f93dfe7f62f  replay/replay.py$'
+          sha256sum replay/README.md | grep -q '^93ceaf7df8384a35e382ea140c2ce49d18e8d05e5a5869fa9f7163dc46324a20  replay/README.md$'
+      - name: PDF metadata
+        run: |
+          pdfinfo paper/main.pdf | tee /tmp/info.txt
+          grep -qx 'Pages:[[:space:]]*19' /tmp/info.txt
+          grep -q 'Davis Rens' /tmp/info.txt
+      - name: Title, identifiers and the disclosed status appear in the text
+        run: |
+          pdftotext -layout paper/main.pdf paper/main.txt
+          pdftotext paper/main.pdf /tmp/flat.txt
+          flat="$(tr -d ' \n\t\r' < /tmp/flat.txt)"
+          for marker in \
+            'forelectronicpaircorrelationsinthetwo-dimensionalHolsteinmodel' \
+            '0000-0001-5839-5197' \
+            'Thispreprinthasnotbeenpeerreviewed.' \
+            'AIassistance' \
+            '57/500' \
+            '99/100' \
+            '6000' \
+            '4500' \
+            'Koteck' \
+            '10.5281/zenodo.24380128' \
+            '10.5281/zenodo.24412193'; do
+            case "$flat" in
+              *"$marker"*) ;;
+              *) echo "missing from the PDF text: $marker"; exit 1 ;;
+            esac
+          done
+          sha256sum paper/main.pdf
+          md5sum paper/main.pdf
+      - uses: actions/upload-artifact@v4
+        with:
+          name: holstein-strong-coupling-pair-ceiling-paper
+          path: |
+            paper/main.pdf
+            paper/main.txt
+            paper/main.tex
+            paper/refs.bib
+          if-no-files-found: error

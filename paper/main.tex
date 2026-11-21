@@ -1,0 +1,1280 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks,pdfusetitle]{hyperref}
+\usepackage{microtype}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\DOI}[1]{\mbox{\href{https://doi.org/#1}{\nolinkurl{#1}}}}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\Nodd}{N_{\mathrm{odd}}}
+\newcommand{\NoddE}{N_{\mathrm{odd},e}}
+\newcommand{\Dop}{\Delta}
+\newcommand{\dist}{\operatorname{dist}}
+\setlength{\emergencystretch}{2em}
+\title{A strong-coupling ceiling of $6000\,t^{2}/U$ for electronic pair
+correlations in the two-dimensional Holstein model}
+\author{Davis Rens\\SuperMatics Inc.\\\href{https://orcid.org/0000-0001-5839-5197}{ORCID 0000-0001-5839-5197}}
+\date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove exponential clustering of equal-time on-site electronic pair correlations
+for the spinful Holstein model on the square torus $(\mathbb{Z}/N\mathbb{Z})^2$ with
+side $N\ge4$. With $U=F^{2}/K$ the only hypothesis is $\beta t^{2}/U\le 1/6000$,
+that is $k_{\mathrm{B}}T\ge 6000\,t^{2}/U$; on tori of even side the constant drops
+to $4500$. No restriction on the ratio $t/U$ is imposed, and the bound is uniform in
+the phonon frequency, in the torus side and in the chemical potential. At distinct
+sites
+\[
+ \bigl|\langle\Dop_x^\dagger\Dop_y\rangle\bigr|
+ \le \frac{57}{500}\left(\frac{99}{100}\right)^{d(x,y)},
+\]
+with $\Dop_x=c_{x\downarrow}c_{x\uparrow}$ and $d(x,y)$ the torus distance, and the
+rows of the correlation matrix are uniformly summable; hence the clustering
+temperature $T_{\mathrm{pair}}$ of Definition~\ref{def:tpair} obeys
+$k_{\mathrm{B}}T_{\mathrm{pair}}\le6000\,t^{2}/U$. The constant improves the
+previously released value $2^{27}=134\,217\,728$ for the same model by a factor of
+$22\,369$, and the dimension-tracking two-dimensional constant $15\,925\,248$ of the
+companion preprint by a factor of $2654$, at the price of a much slower decay ratio:
+$99/100$ here against $5/64$ in the earlier release and $5/24$ in the companion
+preprint.
+The mechanism is exact at every step: the sixteen-state single-bond spectrum with a
+half-filling supremum, a bridge-parity doubling, an explicit four- or five-edge
+colouring with a Schatten H\"older decoupling that costs a factor $c\le5$, exact
+enumeration of connected supports with at most six edges, a four-ary Raney tree tail,
+and the Koteck\'y--Preiss vertex criterion at $B=557/500$. A single certificate
+program recomputes every finite witness in exact rational and symbolic arithmetic;
+it also certifies that the same scheme fails at $C=5800$ on all tori and at
+$C=4300$ on even tori. The bound is on a clustering temperature of one two-point
+function. It is not a critical temperature, it is not a statement about any
+material, and no claim of superconductivity is made.
+\end{abstract}
+
+\section{Model and main theorem}\label{sec:model}
+
+\subsection{The spinful Holstein model on a square torus}
+
+Fix an integer side $N\ge4$ and let $\Lambda=T_N=(\mathbb{Z}/N\mathbb{Z})^{2}$ be the
+square torus with its nearest-neighbour edge set $E(\Lambda)=\{\{x,y\}\subset\Lambda:
+|x-y|_{1}=1\}$ and $|E(\Lambda)|=2N^{2}$ edges, where
+$|x-y|_{1}=\sum_{j=1}^{2}\min(|x_{j}-y_{j}|,N-|x_{j}-y_{j}|)$ is the $\ell_{1}$
+torus distance, written $d(x,y)$ below. Each site carries a single oscillator
+coordinate $X_x$ and a spinful electron level with four states, empty, up, down and
+doubly occupied. The Holstein Hamiltonian \cite{holstein1959} is
+\begin{equation}\label{eq:H}
+H_\Lambda(\mu)=-t\sum_{e\in E(\Lambda)}B_e
++\sum_{x\in\Lambda}\left[\frac{P_x^{2}}{2m}+\frac{K}{2}X_x^{2}
+-F X_x\,(n_x-1)\right]-\mu\sum_{x\in\Lambda}(n_x-1),
+\end{equation}
+with $B_e=\sum_{\sigma\in\{\uparrow,\downarrow\}}
+(c_{x\sigma}^{\dagger}c_{y\sigma}+c_{y\sigma}^{\dagger}c_{x\sigma})$ the
+spin-summed hopping across $e=\{x,y\}$, $n_x=n_{x\uparrow}+n_{x\downarrow}$, and real
+parameters $t\ge0$, $m>0$, $K>0$, $F$, $\mu\in\mathbb{R}$ with
+$[P_x,X_{x'}]=-i\hbar\delta_{xx'}$. Following the released analysis of the same
+model we write $U=F^{2}/K>0$ for the polaronic energy,
+$\Omega=\hbar\sqrt{K/m}>0$ for the phonon frequency, $\tau=k_{\mathrm{B}}T$ for the
+thermal energy and $\beta=1/\tau$; there is no direct electron-electron
+interaction. The chemical potential is shifted, $\mu_c=\mu-U/2$, only so that the
+atomic electronic Hamiltonian in the odd-occupation gauge reads
+\begin{equation}\label{eq:D0}
+D_0=\frac{U}{2}\Nodd-\mu_c N,\qquad
+\Nodd=\sum_{x\in\Lambda}\mathbf{1}_{\{n_x=1\}},\qquad
+N=\sum_{x\in\Lambda}n_x .
+\end{equation}
+The physical equal-time on-site pair field is
+$\Dop_x=c_{x\downarrow}c_{x\uparrow}$, where the order of the two operators is fixed
+once and for all. For $\mu$, $t$, $N$, $\beta$, the grand-canonical expectation is
+$\langle\,\cdot\,\rangle=\langle\,\cdot\,\rangle_{\beta,\mu,\Lambda}$; throughout,
+$\tau$ is varied at fixed $\mu$, so the grand-canonical ensemble is the natural one
+here and the canonical statement is added separately in
+Section~\ref{sec:canonical}.
+
+\begin{definition}[Clustering temperature]\label{def:tpair}
+Let $T_{\mathrm{pair}}$ be the infimum of the temperatures $\tau$ with the following
+property. For every $\tau'>\tau$, every $N\ge4$, every real $\mu$ and every
+$\Omega>0$, there are constants $A_0>0$ and $\xi>0$, independent of $N$, of $\mu$ and
+of $\Omega$, such that
+$\bigl|\langle\Dop_x^\dagger\Dop_y\rangle_{\beta',\mu,\Lambda}\bigr|
+\le A_0e^{-d(x,y)/\xi}$ for all distinct $x,y\in\Lambda$, and such that the rows of
+the correlation matrix are summable uniformly in $N$,
+$\sup_{N\ge4}\max_{x\in\Lambda}\sum_{y\in\Lambda}
+\bigl|\langle\Dop_x^\dagger\Dop_y\rangle\bigr|<\infty$.
+\end{definition}
+
+$T_{\mathrm{pair}}$ is a clustering temperature. It is an upper threshold for the
+exponential decay of one two-point function and for the summability of its rows, and
+it says nothing about the existence of a phase transition at a critical temperature.
+The theorem below bounds $T_{\mathrm{pair}}$ from above.
+
+\subsection{Main theorem}\label{sec:main}
+
+\begin{theorem}[Uniform-frequency pair-clustering ceiling in two
+dimensions]\label{thm:main}
+Fix $U=F^{2}/K>0$ and $t\ge0$. There is no hypothesis on the ratio $t/U$, and the
+statements below are uniform in $\Omega>0$, in the side $N\ge4$ and in
+$\mu\in\mathbb{R}$.
+\begin{enumerate}
+\item\label{it:all} For every $N\ge4$, if $\beta t^{2}/U\le1/6000$ then every pair
+$x\ne y$ in $\Lambda$ satisfies
+\begin{equation}\label{eq:main}
+\bigl|\langle\Dop_x^\dagger\Dop_y\rangle\bigr|
+\le\frac{57}{500}\left(\frac{99}{100}\right)^{d}
+\qquad\text{with } d=d(x,y)\ge1,
+\end{equation}
+and consequently the rows of the correlation matrix are bounded by
+$1+4A q/(1-q)^{2}\le4515.4$ uniformly in $N$, in $\mu$ and in $\Omega$, with
+$A=57/500$ and $q=99/100$. Thus $k_{\mathrm{B}}T_{\mathrm{pair}}\le6000\,t^{2}/U$.
+\item\label{it:even} If $N$ is even, the same conclusion \eqref{eq:main} holds under
+the weaker hypothesis $\beta t^{2}/U\le1/4500$, hence
+$k_{\mathrm{B}}T_{\mathrm{pair}}\le4500\,t^{2}/U$ on even tori.
+\end{enumerate}
+\end{theorem}
+
+The two parts of the theorem carry the same prefactor and the same decay ratio, so
+the difference between them is only the admissible temperature window. The
+hypothesis is a condition on $\beta t^{2}/U$ alone: it is satisfied at high
+temperature, it places no bound on $t$, $U$ or their ratio at fixed
+$\beta t^{2}/U$, and it does not involve the phonon frequency, which may be sent to
+zero or to infinity at fixed $U$ and $\Omega$ only through $K$ and $m$ with
+$F^{2}/K$ and $\hbar^{2}K/m$ fixed. In the adiabatic limit $\Omega\to0$ the bound is
+unchanged.
+
+The proof occupies Sections~\ref{sec:bond} to~\ref{sec:decay}; it is assembled in
+Section~\ref{sec:proof}. The ingredients are, in the order in which they are used:
+the exact signless majorant of the oscillator contraction
+(Section~\ref{sec:langfirsov}), the connected-support expansion of the correlation
+(Section~\ref{sec:supports}), the exact sixteen-dimensional single-bond spectrum
+(Section~\ref{sec:bond}), the bridge parity with its colouring and H\"older
+decoupling (Section~\ref{sec:colour}), the counting of connected supports
+(Section~\ref{sec:counting}), and the Koteck\'y--Preiss vertex criterion with
+$B=557/500$ (Section~\ref{sec:kp}).
+
+\subsection{What the constants are and where they come from}\label{sec:constants}
+
+The three constants of Theorem~\ref{thm:main} are
+\begin{equation}\label{eq:constants}
+C=6000 \;(4500 \text{ on even tori}),\qquad q=\frac{99}{100},\qquad
+A=\frac{57}{500}=0.114,
+\end{equation}
+with $k_{\mathrm{B}}T_{\mathrm{pair}}\le C\,t^{2}/U$. Internally the proof uses one
+more pair of numbers, the radius $B=557/500=1.114$ and the insertion temperature
+$T_0=303/250=1.212$ (and $121/100$ on even tori), whose powers generate the
+coefficients of the cluster expansion; $A=B-1$ is the prefactor that the
+Koteck\'y--Preiss theorem delivers, and $\ln B\ge0.1079571$ is the margin that the
+budgets must fit under. Table~\ref{tab:audit} records the certified budget.
+
+\begin{table}[t]
+\centering
+\small
+\caption{The two certified budgets of Theorem~\ref{thm:main}. The row
+$S_{\mathrm{phys}}$ splits into the twenty class slots of Table~\ref{tab:classes},
+which contribute $0.0053568$ on all tori and $0.0071407$ on even tori, and the
+$k\ge7$ tail of \eqref{eq:raney}, which contributes $0.0990539$ and $0.0948558$. All
+entries are outward-rounded decimals of exact rational computations; the fourth row
+is the ceiling $\ln B$ that they must stay under.}
+\label{tab:audit}
+\begin{tabular}{lcc}
+\hline
+quantity & all $N\ge4$, $C=6000$ & even $N$, $C=4500$\\
+\hline
+$S_{\mathrm{phys}}$ (physical supports) & $\le0.1044108$ & $\le0.1019965$\\
+$S_{\mathrm{src}}$ (source supports) & $\le0.0008575$ & $\le0.0008381$\\
+$S_{\mathrm{phys}}+S_{\mathrm{src}}$ & $\le0.1052682$ & $\le0.1028345$\\
+$\ln B$ with $B=557/500$ & $\ge0.1079571$ & $\ge0.1079571$\\
+tail test $B M_t^{1/c_{\mathrm{tail}}}/\sqrt{Cy_t}$ vs.\ $w_{\mathrm{eff}}q$
+& $0.1178692\le0.1178862$ & $0.1172984\le0.1173541$\\
+\hline
+\end{tabular}
+\end{table}
+
+The tail test in the last row is the binding constraint of the whole scheme: the
+margin is $1.7\times10^{-5}$ in absolute terms. The certified failure thresholds sit
+just below the working constants, at $C=5800$ on all tori and $C=4300$ on even tori,
+where the same tail test fails. Within this scheme $6000$ and $4500$ are therefore
+close to the smallest constants that the enumerated classes and the four-ary tail
+allow; Section~\ref{sec:floors} discusses how much of that is a property of the
+method rather than of the model.
+
+\section{The earlier route in the same setting}\label{sec:earlier}
+
+The same model was treated in a previous release \cite{rens2026a}, where exponential
+decay was proved at $\beta t^{2}/U\le2^{-27}$ with decay ratio $q=5/64$ and
+prefactor $240/59\approx4.07$. That release is unconditional in $t/U$ and is
+therefore the direct point of comparison. The present paper keeps the overall
+architecture of that argument, a signless trajectory majorant, a polymer expansion
+over connected hopping supports, and a Koteck\'y--Preiss test, and replaces each
+quantitative step. Table~\ref{tab:audit2} records the replacement and the factor
+gained in $C$.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Where the improvement in $C$ against the earlier release \cite{rens2026a} comes
+from. The entries of the last column are of different kinds: two are exact ratios of
+the constants quoted, one is the ratio of a bound to a value, and three are
+attributions rather than separable factors. They do not multiply out to the net
+factor of $22\,369$; see the text.}
+\label{tab:audit2}
+\begin{tabular}{L{4.1cm}L{3.5cm}L{3.2cm}L{2.4cm}}
+\hline
+step & earlier release \cite{rens2026a} & this paper & factor in $C$\\
+\hline
+hopping/trace bound & on-site sum of squares $32kg^{2}/U$ &
+exact sixteen-state bond spectrum with the half-filling supremum of
+Theorem~\ref{thm:bond} & about $25$ (attribution)\\
+atomic fugacity ratio & $z_b/z_a\le5/4$ &
+eliminated: $R_e(b;g;z)\le R_e(b;g;1)$ proved in
+Theorem~\ref{thm:bond} & $(5/4)^{2}=1.5625$ (exact)\\
+bridge hopping multiplicity & $m_e\ge1$ &
+$m_e\ge2$ on bridges, $m=k+b$ (Lemma~\ref{lem:bridge}) & not separable\\
+rooted counting of supports & Euler tours, $16^{k}$ &
+exact torus enumeration at $k\le6$ plus four-ary Raney tail
+(Lemma~\ref{lem:counting}) & about $5.6$ (attribution)\\
+Koteck\'y--Preiss radius & $B=e<3$ & $B=557/500$ & $(3/1.114)^{2}\approx7.25$\\
+insertion scale & fixed length $1024$ & class dependent
+$\ell_E=\sqrt{Cy_E}$ & coupled to $R_e$\\
+pair prefactor & $240/59\approx4.07$ &
+$A=B-1=57/500=0.114$ & $35.68$ (exact)\\
+\hline
+\end{tabular}
+\end{table}
+
+The factors in the table are not separable and do not multiply to the net
+improvement. The atomic fugacity ratio $(5/4)^{2}=1.5625$ enters $C$ directly, the
+radius ratio $7.25$ compares a bound with a value, and $35.68$ is the exact
+improvement in the prefactor $A$, not a factor in $C$. The two entries that do enter
+$C$ give about $11.3$, so a residual factor of about $2000$ is shared between the
+bond spectrum, the bridge parity and the enumeration; we do not attempt to apportion
+it further.
+
+Two of the replacements are compensating rather than one-sided, and this is where
+the honest comparison lives. First, the decay ratio degrades from $5/64\approx0.078$
+to $99/100$, that is the correlation length grows from about one lattice spacing to
+about a hundred; the improvement in $C$ is bought partly by accepting a bound that is
+informative only at distances of a few hundred sites once the prefactor is included.
+Second, the earlier release reached $2^{27}$ with a two-parameter family of ancestors
+that included the cubic lattice; the present argument is genuinely
+two-dimensional, through the four- or five-edge colouring and the four-ary tree tail,
+and its transfer to higher dimensions is not part of this paper.
+
+The companion preprint \cite{rens2026b} proves a dimension-tracking statement for the
+same model on hypercubic tori, with
+$C(d)=442368\,d^{2}(d+1)^{2}$ and hence $C(2)=15\,925\,248$, decay ratio
+$q(2)=5/24$ and prefactor $A(2)=360/19$. In two dimensions the ceiling of this paper
+is smaller by a factor of $2654$ on all tori and $3539$ on even tori at the same
+ensemble, while its decay ratio is larger, $99/100$ against $5/24$. Neither constant
+dominates the other: the dimension-tracking constant loses by a factor
+$d^{2}(d+1)^{2}$ in dimension $d$, and the two-dimensional constant loses by a factor
+$4.75$ in the ratio $q$, which at $q\approx1$ is a factor of $156$ in the exponential
+rate $|\ln q|$ and hence in the correlation length.
+
+\section{The oscillator contraction is a contraction}\label{sec:langfirsov}
+
+The oscillator coordinate couples to the electronic density only through
+$n_x-1$, so the on-site Lang--Firsov unitary \cite{hohenadler2007}
+\[
+\mathcal{U}=\exp\!\left(-\alpha_{\mathrm{LF}}\sum_{x\in\Lambda}(n_x-1)
+(b_x^{\dagger}-b_x)\right),\qquad
+\alpha_{\mathrm{LF}}=\frac{F}{\sqrt{2m\hbar\Omega^{3}}}
+=\sqrt{\frac{U}{2\hbar\Omega}},
+\]
+with $X_x=\sqrt{\hbar/(2m\Omega)}\,(b_x+b_x^{\dagger})$, removes the linear
+electron-phonon coupling and dresses the hopping with displacement operators
+$D_x=\exp(-\alpha_{\mathrm{LF}}(b_x^{\dagger}-b_x))$ of unit operator norm. Because
+the pair field $\Dop_x$ carries charge two, the displacement survives as
+$D_x^{2}$ on a pair insertion and still has operator norm one.
+
+Expanding $e^{-\beta H}$ in a time-ordered Dyson series in the interaction picture of
+the decoupled Hamiltonian and integrating out the oscillators exactly gives, for a
+closed electronic trajectory $\omega$ on $[0,\beta)$ with occupation
+$n_x(u)\in\{0,1,2\}$ on each site, the normalized phonon weight
+\begin{equation}\label{eq:phi}
+\exp\!\left(-\sum_{x\in\Lambda}\Phi_\beta[n_x]\right),\qquad
+\Phi_\beta[n]=\frac{\beta U}{2}\sum_{s\ne0}
+\frac{\omega_s^{2}}{\omega_s^{2}+\Omega^{2}}\,|n_s|^{2}\ \ge0,
+\end{equation}
+the sum running over the occupation modes $n_s=\beta^{-1}\int_0^{\beta}
+n(u)e^{-i\omega_su}du$ of the site, $\omega_s=2\pi s/\beta$, in units $\hbar=1$.
+Appendix~\ref{app:oscillator} records the equivalent kernel form, in which
+$\Phi_\beta[n]$ is a quarter of the double integral of $(n(u)-n(v))^{2}$ against the
+positive kernel $\tfrac{U\Omega}{2}(e^{-\Omega w}+e^{-\Omega(\beta-w)})
+/(1-e^{-\beta\Omega})$, and derives \eqref{eq:phi} from it. The derivation is local
+in the site index; the positivity $\Phi_\beta[n]\ge0$ and the resulting bound
+\begin{equation}\label{eq:majorant}
+0\le\exp\!\left(-\sum_{x\in\Lambda}\Phi_\beta[n_x]\right)\le1
+\end{equation}
+hold verbatim in any dimension and in particular on the square torus. The trace
+identity behind them is proved in \cite[Section 3]{rens2026a} and is repeated in
+Appendix~\ref{app:oscillator} only to fix the notation. Since no sign of an
+electronic matrix element, of a Jordan--Wigner
+string or of a hopping amplitude survives \eqref{eq:majorant}, every trace below may
+be replaced by the corresponding signless trace, in which each legal directed hop
+contributes a matrix element one instead of a signed fermionic amplitude. The
+signless trace is a bookkeeping majorant, not a Hamiltonian.
+
+\section{The signless majorant and the connected-support expansion}
+\label{sec:supports}
+
+Rescale the hopping as $t=t/\ell_e\cdot\ell_e$ on every edge and let the edge scales
+$\ell_e\ge1$ be free for the moment. Summing \eqref{eq:majorant} over trajectories
+gives, for the vacuum polymers of the signless expansion, activities $w(E)$ supported
+on connected edge sets $E\subset E(\Lambda)$ with $|E|\ge1$, and for the pair-marked
+polymers activities $w_{xy}(E)$ on the same supports with $x,y\in V(E)$. With vertex
+compatibility $E_1\sim E_2$ if and only if $V(E_1)\cap V(E_2)\ne\emptyset$, the
+correlation admits the connected-support representation
+\begin{equation}\label{eq:rep}
+\langle\Dop_x^\dagger\Dop_y\rangle_{\mathrm{GC}}
+=\sum_{\substack{E\subset E(\Lambda)\ \text{connected}\\ x,y\in V(E)}}
+w_{xy}(E)\,\frac{Z_{\Lambda\setminus V(E)}}{Z_\Lambda},
+\qquad x\ne y,
+\end{equation}
+where $Z_\Lambda$ is the polymer partition function of the connected hopping supports
+and $Z_{\Lambda\setminus V(E)}$ the same partition function with the vertices of
+$E$ deleted. Equation~\eqref{eq:rep} is the representation proved in
+\cite[Section 5]{rens2026a}; nothing in this paper modifies it, and the entire content of
+the present argument is a sharper bound on $|w_{xy}(E)|$ and a sharper summation over
+supports.
+
+The two gains of this paper enter \eqref{eq:rep} at different places. The bridge
+parity of Section~\ref{sec:colour} counts the number of hops across every edge of a
+support, so that an edge with many hops pays $\ell_e^{-m_e}$ and an edge that is a
+bridge pays at least its square. The single-bond spectrum of Section~\ref{sec:bond}
+bounds the signless trace that remains after the hops have been counted, and it is
+uniform in the atomic parameter. Neither step uses smallness of $t/U$.
+
+\section{The single bond: exact spectrum, half-filling supremum, certified
+intervals}\label{sec:bond}
+
+All the analytic input about the atoms is contained in the trace of the signless
+hopping on one bond. On $e=\{u,v\}$ with Fock space $\mathcal{F}(e)$ of dimension
+$16$, let $b=\beta U\ge0$, $g\ge0$, $z=e^{\beta\mu_c}>0$,
+$q=e^{-b/2}\in(0,1]$ and $r=\sqrt{b^{2}/4+4g^{2}}\ge b/2$, and set
+\begin{equation}\label{eq:Re}
+R_e(b;g;z)=\frac{\Tr_{\mathcal{F}(e)}\bigl[
+\exp(-\beta D_{0,e}+gB_e)\bigr]}{Z_0(e)},\qquad
+Z_0(e)=\Tr_{\mathcal{F}(e)}e^{-\beta D_{0,e}} .
+\end{equation}
+
+\begin{theorem}[Exact five-sector spectrum and the half-filling
+supremum]\label{thm:bond}
+In the notation above:
+\begin{enumerate}
+\item\label{it:spec} The eigenvalues of $-\tfrac{b}{2}\NoddE+gB_e$, sorted by
+total electron number $N_{\mathrm{tot}}\in\{0,1,2,3,4\}$, are
+\[
+\begin{aligned}
+N_{\mathrm{tot}}=0 &: \{0\}\ \text{(mult.\ 1)},\\
+N_{\mathrm{tot}}=1 &: \{-\tfrac{b}{2}+g\ \text{(mult.\ 2)},\;
+-\tfrac{b}{2}-g\ \text{(mult.\ 2)}\},\\
+N_{\mathrm{tot}}=2 &: \{-b\ \text{(mult.\ 3)},\; 0\ \text{(mult.\ 1)},\;
+-\tfrac{b}{2}+r\ \text{(mult.\ 1)},\; -\tfrac{b}{2}-r\ \text{(mult.\ 1)}\},\\
+N_{\mathrm{tot}}=3 &: \{-\tfrac{b}{2}+g\ \text{(mult.\ 2)},\;
+-\tfrac{b}{2}-g\ \text{(mult.\ 2)}\},\\
+N_{\mathrm{tot}}=4 &: \{0\}\ \text{(mult.\ 1)}.
+\end{aligned}
+\]
+\item\label{it:closed} With $w=z+z^{-1}\ge2$, $C_0=\cosh(g)$ and
+$C_2=\cosh(r)\ge\cosh(b/2)=\tfrac12(q+q^{-1})$,
+\begin{equation}\label{eq:closed}
+R_e(b;g;z)=1+\frac{A(b,g)\,w+B_0(b,g)}{(w+2q)^{2}},
+\end{equation}
+where $A(b,g)=4q(C_0-1)\ge0$ and $B_0(b,g)=2qC_2-q^{2}-1\ge0$.
+\item\label{it:sup} For every $z>0$ and $b,g\ge0$,
+\begin{equation}\label{eq:sup}
+\begin{aligned}
+R_e(b;g;z)&\le R_e(b;g;1)
+=\frac{3+3q^{2}+8q\cosh(g)+2q\cosh(r)}{4(1+q)^{2}}\\
+&\le\frac{3+4q^{2}+8q\cosh(g)+e^{r-b/2}}{4(1+q)^{2}}
+=:R_e^{\mathrm{ub}}(b;g).
+\end{aligned}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The Jordan--Wigner sign gauge of \cite[Section 4]{rens2026a} conjugates the physical
+hopping on $e$ to $B_e$, which preserves $N_{\mathrm{tot}}$ and both spin numbers and
+is the two-site signless hopping. On $N_{\mathrm{tot}}=0$ and $N_{\mathrm{tot}}=4$ the
+space is one dimensional, $B_e=0$ and $\NoddE=0$. On $N_{\mathrm{tot}}=1$ and
+$N_{\mathrm{tot}}=3$ the space is four dimensional, $\NoddE=1$, and $B_e$ is two
+copies of $\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$, giving
+$-\tfrac{b}{2}\pm g$ twice each. On $N_{\mathrm{tot}}=2$ the two equal-spin states
+give eigenvalue $-b$ with multiplicity two; on the remaining four-dimensional space
+spanned by $|2,0\rangle,|0,2\rangle,|\uparrow\downarrow\rangle,|\downarrow\uparrow\rangle$
+the matrix of $-\tfrac{b}{2}\NoddE+gB_e$ is
+\[
+\begin{pmatrix}0&0&g&g\\0&0&g&g\\g&g&-b&0\\g&g&0&-b\end{pmatrix},
+\]
+whose antisymmetric combinations give $0$ and $-b$ and whose symmetric combinations
+span $\bigl(\begin{smallmatrix}0&2g\\2g&-b\end{smallmatrix}\bigr)$ with eigenvalues
+$-\tfrac{b}{2}\pm r$. This proves the first item; the multiplicity count is
+$1+4+6+4+1=16$.
+
+For the second item, summing $z^{N_{\mathrm{tot}}}e^{\lambda}$ over the sixteen
+eigenvalues gives
+$Z_e=(1+z^{4})+(z+z^{3})\,4q\cosh(g)+z^{2}(1+3q^{2}+2q\cosh(r))$. Dividing by
+$z^{2}$, using $z^{2}+z^{-2}=w^{2}-2$ and $Z_0(e)/z^{2}=(w+2q)^{2}$, gives the exact
+polynomial identity
+\[
+\frac{Z_e(b;g;z)}{z^{2}}=(w+2q)^{2}+4q(C_0-1)w+(2qC_2-q^{2}-1),
+\]
+which is \eqref{eq:closed}; $A\ge0$ is immediate and $B_0\ge0$ follows from
+$C_2\ge\cosh(b/2)$. For the third item, differentiate \eqref{eq:closed} in
+$w\ge2$:
+\[
+\frac{\partial R_e}{\partial w}
+=\frac{A(w+2q)-2(Aw+B_0)}{(w+2q)^{3}}
+=-\frac{A(w-2q)+2B_0}{(w+2q)^{3}}\le0,
+\]
+since $w\ge2\ge2q$ and $A,B_0\ge0$. The supremum in $z>0$ is therefore attained at
+$z=1$, that is $w=2$, which is the first inequality of \eqref{eq:sup}; the second
+follows from $2q\cosh(r)=e^{r-b/2}+e^{-(r+b/2)}$ and
+$e^{-(r+b/2)}\le e^{-b}=q^{2}$, so that
+$3q^{2}+e^{-(r+b/2)}\le4q^{2}$.
+\end{proof}
+
+Item~\ref{it:sup} is what removes the atomic fugacity ratio $z_b/z_a\le5/4$ that the
+earlier release had to carry: the supremum in the chemical potential is attained at
+half filling and is available in closed form, so no ratio enters the budget.
+
+What remains is a one-variable problem: bound
+$\sup_{b\ge0}R_e^{\mathrm{ub}}(b;c\sqrt{yb})$ for the specific rational parameters
+$(c,y)$ that the classes of Section~\ref{sec:counting} generate. Write
+\begin{equation}\label{eq:Pe}
+P_e(c,y):=\sup_{b\ge0}R_e\bigl(b;c\sqrt{yb};1\bigr)\le\sup_{b\ge0}
+R_e^{\mathrm{ub}}\bigl(b;c\sqrt{yb}\bigr),
+\end{equation}
+where the argument $g=c\sqrt{yb}$ is the only place the colour count $c$ and the
+scaled hopping enter. The bound $g=c\beta\ell_Et\le c\sqrt{y_E b}$ used here is the
+statement that $\beta\ell_Et\le\sqrt{y_E b}$, which holds whenever $\ell_E=\sqrt{Cy_E}$ and
+$\beta t^{2}/U\le1/C$, since then
+$\beta\ell_Et=\sqrt{y_EC(\beta t^{2}/U)b}\le\sqrt{y_Eb}$.
+
+\begin{corollary}[Certified uniform bounds]\label{cor:pe}
+For every $C>0$ and every parameter pair $(c,y)$ appearing in
+Tables~\ref{tab:classes} and~\eqref{eq:raney}, the supremum \eqref{eq:Pe} is
+bounded above by an explicit rational $M=M(c,y)$, uniformly in $b\ge0$ and in
+$\beta t^{2}/U\le1/C$. The twenty-two class slots of the two tables use twelve
+distinct rational triples $(c,y,M)$, and all of them are certified in exact
+outward-rounded rational arithmetic on $102$ adaptive
+intervals covering $[0,40]$, together with an exact tail bound on $[40,\infty)$
+obtained from $r-b/2=4c^{2}yb/(r+b/2)\le4c^{2}y$.
+\end{corollary}
+
+The tail estimate in the corollary is where the colour count becomes expensive:
+$c$ enters the exponential through $c^{2}y$, and a larger $c$ forces a larger
+$M$. This is the amplification discussed in Section~\ref{sec:floors}.
+
+\section{Bridge parity, edge colouring, and coloured H\"older decoupling}
+\label{sec:colour}
+
+A support $E$ with $k$ edges and $b(E)$ bridges constrains how often a closed
+trajectory can cross each edge. The first statement is a parity count.
+
+\begin{lemma}[Bridge parity]\label{lem:bridge}
+Let $E$ be a connected subgraph with $k=|E|\ge1$ edges and $b=b(E)$ bridges. For any
+closed electronic trajectory $\omega$ with active edge set $E$, either the vacuum
+trajectory contributing to $w(E)$ or a trajectory with one insertion
+$O_{xy}=\Dop_x^\dagger\Dop_y$, $x\ne y\in V(E)$, contributing to $w_{xy}(E)$, let
+$m_e(\omega)\ge1$ be the number of hops across $e\in E$. Then $m_e(\omega)$ is even,
+hence at least two, on every bridge $e$, and at least one on every other edge; in
+particular $\sum_{e\in E}m_e(\omega)\ge m(E):=k+b(E)$.
+\end{lemma}
+
+\begin{proof}
+Let $e=\{u,v\}$ be a bridge of a physical component and let $V_1\sqcup V_2$ be the
+vertex partition it defines, with $u\in V_1$. No edge of the component other than $e$
+joins $V_1$ to its complement, so the electron number $N(V_1)$ changes only through
+hops across $e$ and through pair insertions. Along the closed trajectory
+$N(V_1)$ returns to its initial integer value. Each hop across $e$ changes $N(V_1)$ by
+$\pm1$, that is by an odd amount. The insertion $\Dop_x^\dagger\Dop_y$ creates two
+electrons at $x$ and annihilates two electrons at $y$, and each pair-source jump does
+the same, so the change of $N(V_1)$ is $0$ or $\pm2$, always even. Reducing
+$\Delta N(V_1)=0$ modulo $2$ gives $m_e\equiv0\pmod2$; since $e$ is active,
+$m_e\ge2$. Summing over edges gives the stated total.
+\end{proof}
+
+The lemma has a consequence that is easy to miss: the interior of a large
+one-dimensional chain pays the same squared factor on each of its links, so a chain
+support of $k$ edges pays $\ell^{-2k}$ rather than $\ell^{-k}$.
+
+\begin{lemma}[Edge colouring]\label{lem:edgecolor}
+Let $T_N=(\mathbb{Z}/N\mathbb{Z})^{2}$.
+\begin{enumerate}
+\item\label{it:chi} If $N\ge4$ is even, $\chi'(T_N)=4$, explicitly: colour the
+horizontal edge $\{(x,y),(x+1,y)\}$ by $1$ or $2$ according to $x\bmod2$, and the
+vertical edge $\{(x,y),(x,y+1)\}$ by $3$ or $4$ according to $y\bmod2$.
+\item\label{it:chi5} If $N\ge5$ is odd, $\chi'(T_N)=5$, explicitly: colour the
+horizontal edges $\{(x,y),(x+1,y)\}$ with even $x\in\{0,2,\dots,N-3\}$ together with
+the vertical wrap-around edge $\{(N-1,N-1),(N-1,0)\}$ by $1$; the horizontal edges
+with odd $x\in\{1,3,\dots,N-2\}$ together with $\{(0,N-1),(0,0)\}$ by $2$; the
+vertical edges $\{(x,y),(x,y+1)\}$ with even $y\in\{0,2,\dots,N-3\}$ by $3$; those
+with odd $y\in\{1,3,\dots,N-2\}$ by $4$; and all remaining wrap-around edges (the
+horizontal edges $\{(N-1,y),(0,y)\}$ and the vertical edges $\{(x,N-1),(x,0)\}$ for
+$1\le x\le N-2$) by $5$.
+\item\label{it:k6} For every connected subgraph $E\subset T_N$ with $N\ge4$ and
+$1\le|E|\le6$, one has $\chi'(E)\le c_{\mathrm{ub}}(E)$, where
+$c_{\mathrm{ub}}(E)=\Delta(E)$ if $E$ is bipartite and
+$c_{\mathrm{ub}}(E)=\Delta(E)+1$ otherwise; in particular $c_{\mathrm{ub}}(E)\le4$
+on every class of Table~\ref{tab:classes}.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For (1), every vertex has one horizontal edge of each parity and one vertical edge of
+each parity, so the four classes are matchings and the four-colouring is proper; a
+$4$-regular graph needs at least four colours. For (2), let $(x,y)$ be a vertex. If
+$1\le x\le N-2$ the two incident horizontal edges carry colours $1$ and $2$, the two
+non wrap-around vertical edges carry $3$ and $4$, and a vertical wrap-around edge,
+present only when $y\in\{0,N-1\}$, carries $5$. If $x=0$ the incident horizontal
+edges are $\{(0,y),(1,y)\}$ of colour $1$ and $\{(N-1,y),(0,y)\}$ of colour $5$, the
+vertical edges carry $3$ and $4$, and the vertical wrap-around edge
+$\{(0,N-1),(0,0)\}$ carries $2$. If $x=N-1$ the incident horizontal edges carry $2$
+and $5$, the vertical edges carry $3$ and $4$, and the vertical wrap-around edge
+$\{(N-1,N-1),(N-1,0)\}$ carries $1$. In each case the incident colours are distinct,
+so the five colouring is proper. It is optimal because a matching on the
+$N^{2}$ vertices with $N$ odd has at most $(N^{2}-1)/2$ edges, so four colours cover
+at most $2(N^{2}-1)<2N^{2}=|E(T_N)|$ edges; hence $\chi'(T_N)=5$. For (3), K\"onig's
+line-colouring theorem gives $\chi'(E)=\Delta(E)$ on bipartite graphs and Vizing's
+theorem gives $\chi'(E)\le\Delta(E)+1$ in general. A connected subgraph with at most
+six edges on a square torus is non-bipartite only if it contains an odd cycle, and the
+only odd cycles available are the two rooted five-cycles and the five-cycle with one
+adjacent edge; a five-cycle has $\Delta=2$ and the latter $\Delta=3$, so
+$c_{\mathrm{ub}}\le4$. Every class of Table~\ref{tab:classes} is checked in that
+table.
+\end{proof}
+
+Part~\ref{it:k6} is the only place where the small-edge enumeration pays off in the
+colouring: for $k\ge7$ the supports may contain longer odd cycles and up to four
+edges at a vertex, and the colour count is then $c_{\mathrm{tail}}=5$ on all tori and
+$4$ on even tori, where the grid is bipartite.
+
+\begin{lemma}[Coloured H\"older decoupling]\label{lem:holder}
+Let $E$ be a finite subgraph with a proper edge colouring
+$E=\bigsqcup_{j=1}^{c}E_j$ into matchings. For edge scales $\ell_e\ge1$ let
+$H_j=-D_{0,V(E)}+c\sum_{e\in E_j}\ell_etB_e$ and
+$Q_E=\exp\bigl(\beta(-D_{0,V(E)}+\sum_{e\in E}\ell_etB_e)\bigr)$. Then
+\begin{equation}\label{eq:holder}
+\begin{aligned}
+\Tr_{\mathcal{F}(V(E))}\Bigl[\exp\Bigl(-\beta D_{0,V(E)}
++\beta\sum_{e\in E}\ell_etB_e\Bigr)\Bigr]
+&\le\prod_{j=1}^{c}\Bigl(\Tr_{\mathcal{F}(V(E))}e^{\beta H_j}\Bigr)^{1/c}\\
+&=Z_0(V(E))\prod_{e\in E}R_e\bigl(b;\,c\ell_e\beta t;\,z\bigr)^{1/c},
+\end{aligned}
+\end{equation}
+and for the pair-marked trace with $O_{xy}=\Dop_x^\dagger\Dop_y$, $x\ne y$,
+\[
+\bigl|\Tr_{\mathcal{F}(V(E))}\bigl(O_{xy}Q_E\bigr)\bigr|
+\le\Tr_{\mathcal{F}(V(E))}\bigl(Q_E\bigr),
+\]
+so that \eqref{eq:holder} applies to $|w_{xy}(E)|$ as well.
+\end{lemma}
+
+\begin{proof}
+The pair-marked statement is immediate: $Q_E$ is Hermitian positive semidefinite with
+eigenvalues $\lambda_a\ge0$ and $O_{xy}$ is a partial isometry of operator norm one,
+so $|\Tr(O_{xy}Q_E)|\le\sum_a\lambda_a=|\Tr Q_E|$. For the first statement, the
+Lie--Trotter product formula \cite{trotter1959} applied to
+$\beta\sum_jH_j/c$ and the Schatten H\"older inequality for trace ideals give, for
+every finite product length $M$, the bound
+$|\Tr\prod_{m}\prod_{j}A_j|\le\prod_{j}(\Tr A_j^{cM})^{1/c}$, and letting $M\to\infty$
+yields the first inequality of \eqref{eq:holder}. Within each colour class the edges
+are vertex disjoint, so $H_j$ is a direct sum of single-bond terms and the
+trace factorizes: $\Tr e^{\beta H_j}/Z_0(V(E))=\prod_{e\in E_j}R_e(b;c\ell_e\beta
+t;z)$. Multiplying over the colour classes gives the identity in
+\eqref{eq:holder}.
+\end{proof}
+
+The price of the decoupling is visible in the argument: the bond ratio is evaluated
+at $c\ell_e\beta t$ rather than $\ell_e\beta t$, so the hopping appears amplified by
+the colour count. That factor is the origin of the $c^{2}$ in
+Section~\ref{sec:bond} and, quantitatively, of the floor in
+Section~\ref{sec:floors}.
+
+\section{Counting connected supports}\label{sec:counting}
+
+Two counting devices are used. Supports with at most six edges are enumerated exactly
+on the torus, because the single-bond bound is not enough there and the bridge parity
+is most valuable; larger supports are counted by a tree injection.
+
+\begin{lemma}[Exact classes and the Raney tail]\label{lem:counting}
+Let $T_N$ be a square torus with $N\ge4$.
+\begin{enumerate}
+\item\label{it:exact} Every connected edge subgraph of $T_N$ with $1\le|E|\le6$
+belongs, together with its root vertex, to one of the twenty classes of
+Table~\ref{tab:classes}, which record the number of vertices $v$, the number of edges
+$k$, the colour count $c=c_{\mathrm{ub}}$, the hop total $m=k+b(E)$ and the
+multiplicity. On an even torus the two classes marked with a star do not occur, so
+eighteen classes suffice.
+\item\label{it:tail} On a four-regular graph, an ordered depth-first exploration from
+a fixed root with four root slots and three forward slots per traversed edge maps
+every connected $k$-edge subgraph that contains the root injectively to a rooted
+quadruple of trees of total edge count $k$. The generating function of such
+quadruples is $T(w)^{4}$ with $T=1+wT^{3}$, whose coefficients are
+\begin{equation}\label{eq:raney}
+R_4(k)=[w^{k}]T(w)^{4}=\frac{4}{3k+4}\binom{3k+4}{k},\qquad
+R_4(0,\dots,6)=(1,4,18,88,455,2448,13566).
+\end{equation}
+Consequently, for any $w_{\mathrm{eff}}\in(0,4/27)$, with $T\in(1,3/2)$ the positive
+root of $T=1+w_{\mathrm{eff}}T^{3}$,
+\[
+\sum_{\substack{E\ \text{connected},\,x\in V(E)\\ |E|\ge7}}
+w_{\mathrm{eff}}^{|E|}\le T^{4}-\sum_{k=0}^{6}R_4(k)w_{\mathrm{eff}}^{k}.
+\]
+\item\label{it:twovar} If each site also carries two source incidences, the ordered
+exploration on the resulting $(4,2)$-regular multigraph has generating function
+\begin{equation}\label{eq:twovar}
+G_{\mathrm{aug}}(w_p,w_s)=P^{4}S^{2},\qquad
+P=1+w_pP^{3}S^{2},\qquad S=1+w_sP^{4}S=\frac{1}{1-w_sP^{4}},
+\end{equation}
+and every connected polymer $E=E_{\mathrm{phys}}\sqcup E_{\mathrm{src}}$ containing
+the root with $k_p\ge0$ physical and $k_s\ge1$ source edges is counted at most
+$[w_p^{k_p}w_s^{k_s}]G_{\mathrm{aug}}$. Moreover, for $T_0>1$,
+$w_{\mathrm{eff}}=(T_0-1)/T_0^{3}$, $w_sT_0^{4}<1$ and
+$w_p\le w_{\mathrm{eff}}/S_{\mathrm{hi}}^{2}$ with
+$S_{\mathrm{hi}}=(1-w_sT_0^{4})^{-1}$, the monotone fixed point satisfies
+$P\le T_0$ and $S\le S_{\mathrm{hi}}$, and
+\begin{equation}\label{eq:twobound}
+G_{\mathrm{aug}}(w_p,w_s)-G_{\mathrm{aug}}(w_p,0)
+\le w_s\bigl(4T_0^{3}S_{\mathrm{hi}}^{2}D_P+2T_0^{4}S_{\mathrm{hi}}D_S\bigr),
+\end{equation}
+with $D_P=2w_pT_0^{7}S_{\mathrm{hi}}^{3}/\mathrm{den}$,
+$D_S=T_0^{4}S_{\mathrm{hi}}^{2}+4w_sT_0^{3}S_{\mathrm{hi}}^{2}D_P$ and
+$\mathrm{den}=1-3w_pT_0^{2}S_{\mathrm{hi}}^{2}-8w_pw_sT_0^{6}S_{\mathrm{hi}}^{3}>0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For (1), exhaustive breadth-first enumeration of rooted connected edge subgraphs of
+$T_N$ for $N=4,5,6,7$ produces the twenty classes; a connected subgraph with at most
+six edges has diameter at most six, so every cycle in it has length at most six and
+each such subgraph on $T_N$ with $N\ge7$ lifts isomorphically to the infinite grid,
+which makes $T_7$ exhaustive for all $N\ge7$. On an even torus the grid is bipartite,
+so neither the five-cycle nor the five-cycle with an edge appears. For (2), fix an
+ordering of the four physical incidences at every vertex and run depth-first search.
+The root opens four slots; traversing an edge into an unvisited vertex leaves three
+forward slots, which is the relation $T=1+wT^{3}$; an edge whose far endpoint is
+already visited closes a cycle and is recorded as a terminal leaf, which is allowed
+because $T\ge1$ termwise. Since every edge is discovered from its earlier endpoint
+and the incidence ordering identifies the edge, the map to marked trees is injective.
+Lagrange inversion gives the coefficient formula in \eqref{eq:raney}. For (3), the
+same argument with two source incidences per site gives \eqref{eq:twovar}; bounding
+$G_{\mathrm{aug}}(w_p,w_s)-G_{\mathrm{aug}}(w_p,0)$ by the mean value theorem in
+$w_s$ and differentiating the implicit equations under $P\le T_0$, $S\le S_{\mathrm{hi}}$
+gives \eqref{eq:twobound}.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{The twenty classes of connected supports with at most six edges, by the
+number of vertices $v$, the number of edges $k$, the colour count $c$, the hop total
+$m=k+b$ and the multiplicity. A star marks the two classes that cannot occur on an
+even torus. Every entry is enumerated exactly; the last column is the contribution of
+the class to the budget $S_{\mathrm{phys}}$ at $C=6000$, computed in exact rational
+arithmetic and rounded to nearest at seven decimals, so the exact sum over the twenty
+slots, $0.0053568$, differs from the sum of the printed entries by the rounding.}
+\label{tab:classes}
+\begin{tabular}{rrrrr r}
+\hline
+$v$ & $k$ & $c$ & $m$ & multiplicity & contribution at $C=6000$\\
+\hline
+2 & 1 & 1 & 2 & 4 & $0.0047994$\\
+3 & 2 & 2 & 4 & 18 & $0.0001099$\\
+4 & 3 & 2 & 6 & 72 & $0.0000011$\\
+4 & 3 & 3 & 6 & 16 & $0.0000013$\\
+4 & 4 & 2 & 4 & 6 & $0.0001061$\\
+5 & 4 & 2 & 8 & 250 & $0.0000045$\\
+5 & 4 & 3 & 8 & 180 & $0.0000032$\\
+5 & 4 & 4 & 8 & 5 & $0.0000001$\\
+5 & 5 & 3 & 5 & $2^{\star}$ & $0.0000087$\\
+5 & 5 & 3 & 6 & 60 & $0.0000141$\\
+6 & 5 & 2 & 10 & 852 & $0.0000171$\\
+6 & 5 & 3 & 10 & 1260 & $0.0000253$\\
+6 & 5 & 4 & 10 & 72 & $0.0000014$\\
+6 & 6 & 2 & 6 & 48 & $0.0000039$\\
+6 & 6 & 3 & 8 & 432 & $0.0000088$\\
+6 & 6 & 4 & 7 & $24^{\star}$ & $0.0000019$\\
+6 & 6 & 4 & 8 & 36 & $0.0000007$\\
+7 & 6 & 2 & 12 & 2730 & $0.0000617$\\
+7 & 6 & 3 & 12 & 7658 & $0.0001732$\\
+7 & 6 & 4 & 12 & 630 & $0.0000142$\\
+\hline
+\end{tabular}
+\end{table}
+
+The classes are cheap; the single bond, counted four times from a root, contributes
+$0.0047994$, a twentieth of the whole physical budget, and the largest of the
+remaining contributions is the six-edge, twelve-hop class $(7,6,3,12)$ at
+$0.0001732$. The budget is dominated by the tail, which is where the four-ary tree
+count with growth rate $1/w_{\mathrm{eff}}=8.4$ per edge replaces the Euler-tour
+count with growth rate $16$ per edge of the earlier release.
+
+\section{The Koteck\'y--Preiss vertex criterion}\label{sec:kp}
+
+We quote the criterion in the form in which it is used.
+
+\begin{proposition}[Koteck\'y--Preiss \cite{kotecky1986}, Theorem 1]\label{prop:kp}
+Let $\mathcal{P}$ be a countable polymer set with the symmetric incompatibility
+relation $\gamma\sim\gamma'$ if and only if $V(\gamma)\cap V(\gamma')\ne\emptyset$ and
+complex activities $w(\gamma)$. Suppose that there are
+$a,b\colon\mathcal{P}\to[0,\infty)$ such that for every $\gamma_0\in\mathcal{P}$
+\begin{equation}\label{eq:kp}
+\sum_{\gamma\sim\gamma_0}|w(\gamma)|\,e^{a(\gamma)+b(\gamma)}\le a(\gamma_0).
+\end{equation}
+Then the cluster expansion of $\ln Z_\Lambda$ converges absolutely, and for every
+$\gamma_0$ one has
+\[
+\sum_{X\sim\gamma_0}|\Phi^{T}(X)|e^{b(X)}\le a(\gamma_0),
+\]
+with $b(X)=\sum_{\gamma\in X}b(\gamma)$. With $a(\gamma)=|V(\gamma)|\ln B$ and
+$b(\gamma)=|E_{\mathrm{phys}}(\gamma)|\ln(1/q)$ for $B>1$ and $q\in(0,1)$, where
+$E(\gamma)=E_{\mathrm{phys}}(\gamma)$ is the physical edge set of $\gamma$, the
+vertex-sum condition
+\begin{equation}\label{eq:vertexsum}
+\sup_{x\in\Lambda}\sum_{\gamma\ni x}|w(\gamma)|\,B^{|V(\gamma)|}q^{-|E(\gamma)|}
+\le\ln B
+\end{equation}
+implies \eqref{eq:kp}, and then for every $S\subset\Lambda$
+\begin{equation}\label{eq:deletion}
+\left|\frac{Z_{\Lambda\setminus S}}{Z_\Lambda}\right|
+\le\exp\Bigl(\sum_{x\in S}\sum_{X\ni x}|\Phi^{T}(X)|\Bigr)\le B^{|S|}.
+\end{equation}
+\end{proposition}
+
+The condition \eqref{eq:vertexsum} is used with $q=99/100$ and $B=557/500$, so the
+right side is $\ln B\in[0.1079571,0.114]$, and with activities bounded in the form
+\begin{equation}\label{eq:activity}
+|w(E)|\le\ell_E^{-m(E)}P_e\bigl(c,y_E\bigr)^{k/c}
+\le(Cy_E)^{-m(E)/2}M_E^{k/c}=:R_E,
+\end{equation}
+which combines Lemma~\ref{lem:bridge}, Lemma~\ref{lem:holder} and
+Corollary~\ref{cor:pe}, and holds equally for $|w_{xy}(E)|$. Because
+$A=B-1$, the prefactor delivered by \eqref{eq:deletion} is exactly the constant of
+Theorem~\ref{thm:main}.
+
+\section{Proof of the main theorem}\label{sec:proof}
+
+The proof is a single chain of inequalities. The last two sections supply it; what
+remains is bookkeeping.
+
+\subsection{The physical vertex sum}
+
+Fix $C$ and the pair $(B,T_0)$ as in Table~\ref{tab:audit}, and set
+$w_{\mathrm{eff}}=(T_0-1)/T_0^{3}$. For a connected support $E$ with $k$ edges,
+$v$ vertices, $b(E)$ bridges and colour count $c$, use the class-dependent scale
+$\ell_E=\sqrt{Cy_E}\ge1$; the accompanying table certifies $Cy_E\ge1$ for every
+class, which is what makes the scale admissible. By \eqref{eq:activity}, the
+contribution of $E$ to the left side of \eqref{eq:vertexsum} is at most
+$B^{v}R_Eq^{-k}$, and summing this over the classes of Table~\ref{tab:classes} and
+over the tail gives
+\begin{equation}\label{eq:physsum}
+S_{\mathrm{phys}}=\sum_{k\le6\ \text{classes}}B^{v}R_Eq^{-k}
++\sum_{k\ge7}B^{|V(E)|}R_Eq^{-k}\le0.1044108
+\end{equation}
+on all tori at $C=6000$ and at most $0.1019965$ on even tori at $C=4500$. The tail is
+not summed term by term: it is dominated by \eqref{eq:raney} at rate
+$w_{\mathrm{eff}}$, and the resulting geometric sum is controlled by the single
+inequality
+\begin{equation}\label{eq:tailtest}
+\frac{B\,M_t^{1/c_{\mathrm{tail}}}}{\sqrt{Cy_t}}
+\le w_{\mathrm{eff}}\,q,
+\end{equation}
+with $(c_t,y_t,M_t)=(5,29/1000,662/125)$ on all tori and
+$(4,39/1000,1893/500)$ on even tori. The left and right sides of \eqref{eq:tailtest}
+are $0.1178692$ and $0.1178862$ on all tori and $0.1172984$ and $0.1173541$ on even
+tori; these are the numbers in the last row of Table~\ref{tab:audit}, and the small
+margin is the only place where the constants are tight.
+
+\subsection{From the vertex sum to the correlation}
+
+Every connected support in \eqref{eq:rep} that contains both $x$ and $y$ has at least
+$d=d(x,y)$ edges, because a connected graph on $k$ edges has diameter at most $k$.
+Hence $1\le q^{d-|E|}$ and, by \eqref{eq:rep}, \eqref{eq:deletion} and
+\eqref{eq:vertexsum},
+\begin{equation}\label{eq:chain}
+\begin{aligned}
+\bigl|\langle\Dop_x^\dagger\Dop_y\rangle\bigr|
+&\le\sum_{\substack{E\ \text{conn.}\\ x,y\in V(E)}}|w_{xy}(E)|\,B^{|V(E)|}\\
+&\le q^{d}\sum_{\substack{E\ \text{conn.}\\ x\in V(E)}}R_E\,B^{|V(E)|}q^{-|E|}
+\le(\ln B)\,q^{d}\le(B-1)q^{d}=Aq^{d},
+\end{aligned}
+\end{equation}
+the last step because $\ln B\le B-1$ and $A=B-1=57/500$. This proves
+\eqref{eq:main}. The rows are then summable: on the torus there are at most $4d$ sites
+at distance $d$, so the row sum at $x$ is at most
+$1+\sum_{d\ge1}4d\,Aq^{d}=1+4Aq/(1-q)^{2}=4515.4$, uniformly in $N$; this is the
+row-sum statement of Theorem~\ref{thm:main}\ref{it:all}. Since the argument
+never uses the sign of $t$, of $\mu_c$ or of $F$, and the harmonic oscillators were
+integrated out exactly at fixed $\Omega$, all constants are uniform in the
+phonon frequency.
+
+\subsection{Decay rate, prefactor, and the interpretation}\label{sec:decay}
+
+Three features of the bound are worth separating. The exponential rate
+$|\ln q|=0.01005$ is weak: the correlation length is about one hundred lattice
+spacings, so the bound falls below one per cent only at distances of about two
+hundred and forty sites, and it is useful as a statement about uniform summability
+rather than as a quantitative decay estimate at moderate distance. The prefactor
+$A=B-1=0.114$ is small, which is a consequence of the Koteck\'y--Preiss radius being
+close to one; being below the trivial bound $1/2$ on the pair density, it makes the
+bound informative at every distance. The constant $C$ in the temperature hypothesis
+is the quantity that this paper improves by four orders of magnitude, and the product
+$C\,t^{2}/U$ is the certified upper bound on $k_{\mathrm{B}}T_{\mathrm{pair}}$.
+
+\section{The canonical thermodynamic limit}\label{sec:canonical}
+
+The grand-canonical bound \eqref{eq:chain} does not by itself describe a system at
+fixed density, because changing $N$ at fixed $\mu$ changes the density. The transfer
+to the canonical ensemble is done, as in \cite[Section 6]{rens2026a}, by adding a
+pair-transfer source
+\begin{equation}\label{eq:source}
+X(\xi)=\sum_{x\in\Lambda}\bigl[e^{i\theta}\Dop_x^\dagger\Dop_{x+r}
++\text{h.c.}\bigr],
+\end{equation}
+with a fixed lattice vector $r\ne0$, differentiating the source-augmented pressure in
+$\xi$ on a complex disk, and controlling the derivative by a Cauchy estimate. The
+source introduces polymers with source edges in addition to the physical supports,
+and the counting of those is part~3 of Lemma~\ref{lem:counting}.
+
+The source activity is bounded as follows. Separating the $k_s$ source insertions at
+ordered times, bounding the phonon weight by one between them, and applying Schatten
+H\"older to the commuting positive propagators with
+$\|B_{e_s}\|_{\mathrm{op}}=1$ gives, for a polymer
+$E=E_{\mathrm{phys}}\sqcup E_{\mathrm{src}}$ with physical components $E_1,\dots,E_r$
+and $|V(E)|\le k_p+k_s+1$,
+\begin{equation}\label{eq:srcbound}
+\bigl|w(E_{\mathrm{phys}}\sqcup E_{\mathrm{src}})\bigr|
+\le L_{\mathrm{src}}^{-k_s}
+\bigl(e^{2\beta L_{\mathrm{src}}|\xi|}-1\bigr)^{k_s}\prod_{i=1}^{r}R_{E_i}.
+\end{equation}
+With $L_{\mathrm{src}}=10^{5}$ and $|\xi|\le\xi_0=\tau/(2L_{\mathrm{src}})$ one has
+$e^{2\beta L_{\mathrm{src}}|\xi|}-1\le e-1<2<3$, so each source edge carries the
+weight $w_s=3B/L_{\mathrm{src}}$. Bounding each physical component at
+$B^{k_i}R_{E_i}q^{-k_i}\le(w_{\mathrm{eff}}/S_{\mathrm{hi}}^{2})^{k_i}$, which is the
+component-wise form of \eqref{eq:physsum} and is checked class by class and for the
+tail, the source part of the vertex sum is at most
+\begin{equation}\label{eq:srcsum}
+S_{\mathrm{src}}\le B\,w_s\,\partial_{w_s}G_{\mathrm{aug}}\le0.0008575
+\quad(\text{all tori}),\qquad \le0.0008381\quad(\text{even tori}),
+\end{equation}
+the two values obtained from \eqref{eq:twobound}. Adding these to
+\eqref{eq:physsum} gives the third row of Table~\ref{tab:audit},
+$0.1052682\le0.1079571\le\ln B$ and $0.1028345\le0.1079571\le\ln B$, so the
+vertex-sum condition holds on the whole disk $|\xi|\le\xi_0$, and the Cauchy estimate
+transfers \eqref{eq:main} to translation-invariant thermodynamic canonical limits at
+every interior density. This gives the following addition to
+Theorem~\ref{thm:main}.
+
+\begin{proposition}[Canonical transfer]\label{prop:canonical}
+Under the hypotheses of Theorem~\ref{thm:main}\ref{it:all} (respectively
+\ref{it:even}), with the same $(C,q,A)=(6000,99/100,57/500)$ (respectively
+$(4500,99/100,57/500)$), bound \eqref{eq:main} holds for the canonical
+thermodynamic limits at every interior total electron density $\rho\in(0,2)$,
+including the balanced spin sectors $\rho_\uparrow=\rho_\downarrow=\rho/2$, uniformly
+in $\Omega>0$.
+\end{proposition}
+
+The source scale $L_{\mathrm{src}}=10^{5}$ is a technical parameter: it is large
+because the source derivative must be bounded on a small disk, and it costs only the
+factor $w_s\approx0.0000334$ in \eqref{eq:srcsum}. The second and third rows of
+Table~\ref{tab:audit} show the cost is genuinely small: the physical budget uses
+$0.1044108$ of the available $0.1079571$ and the canonical transfer adds $0.0008575$.
+
+\section{The trade-off curve}\label{sec:tradeoff}
+
+The constants of Theorem~\ref{thm:main} are the favourable end of a one-parameter
+family. The decay ratio $q$ and the prefactor $A=B-1$ both move with $B$, and the tail
+test \eqref{eq:tailtest} is a comparison between $q$ and the growth rate of the
+support count, so a faster decay, that is a smaller $q$, is affordable only at a
+larger ceiling: at $q=1/2$ the certified ceiling rises to $26\,000$ on all tori and
+$19\,800$ on even tori, and it decreases monotonically to $6000$ and $4500$ at
+$q=99/100$. Theorem~\ref{thm:main} quotes the point of the family with the smallest
+certified ceiling.
+
+\begin{theorem}[Certified trade-off curve]\label{thm:curve}
+For the same model and with no smallness hypothesis on $t/U$, the bound
+$\bigl|\langle\Dop_x^\dagger\Dop_y\rangle\bigr|\le A_{\mathrm{pair}}q_{\mathrm{pair}}^{d}$
+holds at the following certified rational points.
+On all tori $N\ge4$:
+\[
+\begin{gathered}
+(q_{\mathrm{pair}},C,A_{\mathrm{pair}})\in\bigl\{
+(99/100,\,6000,\,57/500),\ (19/20,\,6550,\,53/500),\\
+(9/10,\,7300,\,14/125),\ (3/4,\,10600,\,29/250),\
+(1/2,\,26000,\,4/25)\bigr\},
+\end{gathered}
+\]
+and on even tori $N\ge4$:
+\[
+\begin{gathered}
+(q_{\mathrm{pair}},C,A_{\mathrm{pair}})\in\bigl\{
+(99/100,\,4500,\,57/500),\ (19/20,\,4900,\,11/100),\\
+(9/10,\,5450,\,57/500),\ (3/4,\,7900,\,59/500),\
+(1/2,\,19800,\,41/250)\bigr\}.
+\end{gathered}
+\]
+Only the two first points, with $C=6000$ and $C=4500$, also carry the canonical
+transfer of Proposition~\ref{prop:canonical}; at the other eight the vertex sum is
+certified without the source term.
+\end{theorem}
+
+The curve is the honest statement about what the scheme can do. Halving the decay
+ratio from $99/100$ to $1/2$ costs a factor of four in the ceiling, from $6000$ to
+$26000$ on all tori, and the prefactor rises from $0.114$ to $0.16$; the scheme
+cannot buy a good decay ratio without a substantially weaker temperature bound.
+
+\section{The weighted substrate route and its obstruction}\label{sec:weighted}
+
+A different and older route to the same theorem splits the hopping off the atomic
+Hamiltonian by a weighted two-parameter inequality, keeping a fraction of the atomic
+gap and paying for the rest with a scalar term. The route has the advantage of being
+close to elementary, and the disadvantage of carrying a smallness hypothesis on
+$t/U$. It is useful to record exactly how much it can buy, because that is the
+alternative to the exact bond spectrum used here.
+
+\begin{theorem}[Weighted quadratic form and the $\varepsilon_0$
+obstruction]\label{thm:weighted}
+Let $E$ be a connected physical subgraph with $k=|E|$ edges and maximum degree four,
+let $\gamma\in(0,1]$, $\kappa\in(0,1)$ and $g=\ell t\ge0$ satisfy
+\begin{equation}\label{eq:kappa}
+\frac{16g}{U}\le\kappa\gamma,
+\qquad\text{i.e.}\qquad
+\frac{t}{U}\le\varepsilon_0:=\frac{\kappa\gamma}{16\ell}.
+\end{equation}
+Then on $\mathcal{F}(V(E))$,
+\begin{equation}\label{eq:twoab}
+gB_E\le\frac{\gamma U}{4}\Nodd{}_{V(E)}
++\frac{32kg^{2}}{\gamma(1-\kappa)U}\,\mathbf{1}.
+\end{equation}
+Consequently, bounding the residual atomic fugacity factor at residual gap
+$(1-\gamma/2)$ by $2$ and applying the bridge parity of Lemma~\ref{lem:bridge} with a
+class-independent scale $\ell=\sqrt{C_{2ab}y}$, the vertex-sum condition holds at the
+following five certified rational points, with $q=99/100$ and $B=113/100$ throughout
+and with the source-free budget $S$ (last column, outward-rounded) compared to
+$\ln B\ge0.122217$:
+\begin{center}
+\begin{tabular}{cccccc}
+\hline
+$\kappa$ & $\gamma$ & $y$ & $C_{2ab}$ & $\varepsilon_0$ ($t/U\le$) & $S$\\
+\hline
+$1/10$ & $1$ & $61/4000$ & $85000$ & $173/1000000\approx1/5780$ & $0.121843$\\
+$1/4$ & $1$ & $51/4000$ & $102000$ & $433/1000000\approx1/2309$ & $0.121802$\\
+$1/2$ & $1$ & $17/2000$ & $152000$ & $869/1000000\approx1/1151$ & $0.122001$\\
+$3/4$ & $1$ & $17/4000$ & $305000$ & $1301/1000000\approx1/769$ & $0.121901$\\
+$9/10$ & $1$ & $7/4000$ & $765000$ & $1537/1000000\approx1/651$ & $0.121445$\\
+\hline
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{proof}
+Split $B_e=B_{e,0}+B_{e,+}+B_{e,-}$ according to the change of the odd-occupation
+count, $\Delta\Nodd\in\{0,2,-2\}$. The number-conserving part obeys
+$B_{e,0}\le\Nodd{}_{u}+\Nodd{}_{v}$ because it can only move an electron between two
+singly occupied sites or between two doubly occupied sites while the doubly occupied
+count is unchanged. On the four-dimensional pair-flipping sector the two remaining
+parts couple with matrix element two. Applying $2ab\le ha^{2}+b^{2}/h$ for any $h>0$
+gives $g(B_{e,+}+B_{e,-})\le2gh\,\mathbf{1}+(g/h)(\Nodd{}_{u}+\Nodd{}_{v})$, and
+summing over $e\in E$, each vertex having degree at most four, gives
+\[
+gB_E\le\Bigl(4g+\frac{4g}{h}\Bigr)\Nodd{}_{V(E)}+2kgh\,\mathbf{1}.
+\]
+Choosing $16g/(hU)=(1-\kappa)\gamma$, that is
+$h=16g/(\gamma(1-\kappa)U)$, and using \eqref{eq:kappa}, the coefficient of
+$\Nodd$ is at most $\gamma U/4$ and the scalar coefficient is
+$2kgh=32kg^{2}/(\gamma(1-\kappa)U)$, which is \eqref{eq:twoab}. With
+$g=\sqrt{C_{2ab}y}\,t$ and $\beta t^{2}/U\le1/C_{2ab}$ the scalar exponent per edge is
+$32y/(\gamma(1-\kappa))$, and the resulting edge factor in the vertex sum is
+$2Be^{32y/(\gamma(1-\kappa))}/\sqrt{C_{2ab}y}$, which is what the five certified
+points test.
+\end{proof}
+
+Theorem~\ref{thm:weighted} shows that the weighted route is dominated on both counts.
+The scalar exponent forces the edge factor to be large, so Koteck\'y--Preiss
+convergence at the optimal split needs a scale $\ell=\sqrt{C_{2ab}y}$ of order forty,
+and then \eqref{eq:kappa} caps the admissible ratio at
+$\varepsilon_0=\kappa\gamma/(16\ell)$, which at the best certified point is
+$1537/1000000$. Reaching $\varepsilon_0=1/50$ would need $\ell\le 45/16\approx 2.81$
+at $\kappa=9/10$ and $\gamma=1$, roughly fourteen times smaller than the
+vertex sum permits, and the ceiling would in addition be at least $765000$. The
+comparison is thus not a matter of constants: the exact bond spectrum of
+Section~\ref{sec:bond} removes the hypothesis altogether, and it also lowers the
+ceiling by two orders of magnitude. The obstruction above is a structural estimate
+based on the certified points, not a certified bound; what is certified is the
+five-point curve and the quadratic form \eqref{eq:twoab}.
+
+\section{What the scheme can and cannot reach}\label{sec:floors}
+
+Theorem~\ref{thm:main} proves $6000$; the question of how much of that number is
+model and how much is method is answered by optimising the continuous parameters of
+the same scheme with the combinatorial tables held fixed. The first and fourth items
+below are numerical and the second and third are heuristic; none of them is part of
+Theorem~\ref{thm:main}.
+
+\begin{enumerate}
+\item If $B$, $q_{\mathrm{pair}}$, $T_0$ and the class scales $y_E$ are optimised
+numerically with the twenty classes and the four-ary tail unchanged, the floor is
+about $5314$ on all tori, at $B\approx1.112$ and $T_0\approx1.218$, and about $4000$
+on even tori, at $B\approx1.114$ and $T_0\approx1.218$. The binding constraint is the
+tail test \eqref{eq:tailtest}, which enters quadratically in $c_{\mathrm{tail}}$
+through the argument $c_{\mathrm{tail}}\sqrt{y_tb}$ inside the exponentials of
+\eqref{eq:sup}. Keeping the class scales at their certified values and optimising
+only $B$ and $T_0$ gives about $5950$ on all tori, at $B\approx1.108$ and
+$T_0\approx1.2115$, and about $4440$ on even tori, at $B\approx1.113$ and
+$T_0\approx1.2124$, consistently with the certified failures at $C=5800$ and
+$C=4300$; releasing the scales recovers the smaller numbers quoted.
+\item If the coloured H\"older decoupling were replaced by a single-bond bound at
+$c=1$, keeping the four-ary lattice count and the Koteck\'y--Preiss radius of about
+$1.144$, the floor would drop to about $722$ (heuristic).
+\item If in addition the lattice branching factor $1/w_{\mathrm{eff}}$ were replaced
+by one, the floor would drop to about $9.84$ (heuristic).
+\item Even for a single isolated bond, with $B=1$, no lattice sum and no colour
+decoupling, matching $P_e(1,y)$ against $\ell=\sqrt{Cy}$ requires
+$C\ge\inf_{y>0}P_e(1,y)^{2}/y$, which numerically is about $7.96$ on $b\in[0,40]$
+(attained at $y\approx0.270$; $8.17$ at $y\approx0.258$ over all $b\ge0$); for a
+single two-hop bridge, where parity supplies two factors of $\ell$ rather than one,
+the corresponding floor is $\inf_{y>0}P_e(1,y)/y\approx4.78$ on $b\in[0,40]$
+(attained at $y\approx0.428$; $4.97$ at $y\approx0.401$ over all $b\ge0$). Both
+reported values were recomputed independently from the interval expression behind
+Corollary~\ref{cor:pe}.
+\end{enumerate}
+
+The pattern is clear and it is the honest answer to the obvious question. The gap
+between $6000$ and the four-ary combinatorial ideal of the third item, about a factor
+of $610$, is not spent on the lattice count; it is spent on the colour amplification
+inside the single-bond supremum, and item 4 isolates it: the isolated-bond floor of
+$7.96$ grows like $c^{2}$ in the colour count, so at $c=5$ it is about two hundred,
+and multiplied by the lattice and radius factors it accounts for the order of
+magnitude. Reaching a constant of order $10$ to $100$ would require removing the
+noncommutative colour decoupling, that is bounding the signless trace of several
+mutually noncommuting hopping terms without the Schatten H\"older step, or weakening
+the signless trajectory majorant itself. Neither is done here, and the trade-off
+curve of Section~\ref{sec:tradeoff} shows that moving $q$ away from $99/100$ raises
+the certified ceiling, and the numerical floor of the first item puts every
+optimisation inside the scheme at $4000$ or above.
+
+\section{Relation to the other bounds}\label{sec:relation}
+
+Three comparisons are worth recording, each with its own caveat.
+
+Against the earlier two-dimensional release \cite{rens2026a}: same model, same ensemble,
+both unconditional in $t/U$. The ensemble is literally the same: the earlier release
+writes the chemical term as $-\mu\sum_x n_x$ rather than
+$-\mu\sum_x(n_x-1)$, which multiplies the partition function by the constant
+$e^{\beta\mu V}$ and leaves every correlation unchanged. The ceiling improves from
+$2^{27}=134\,217\,728$ to $6000$ on all tori, a factor of $22\,369$, and to $4500$ on
+even tori, a factor of $29\,826$; the prefactor improves from $240/59\approx4.07$ to
+$0.114$, a factor of $35.68$; the ratio $q$ rises from $5/64$ to $99/100$, so the
+exponential rate $|\ln q|$ falls from $2.549$ to $0.0101$, a factor of $254$, and the
+correlation length grows from $0.39$ to about a hundred lattice spacings.
+
+Against the dimension-tracking preprint \cite{rens2026b}: the model and the ensemble
+are the same, the two-dimensional constant there is $C(2)=15\,925\,248$ with
+$q(2)=5/24$ and $A(2)=360/19$, so the ceiling of this paper is smaller by $2654$ on
+all tori and $3539$ on even tori, the prefactor is smaller by a factor of $166$, and
+the exponential rate $|\ln q|=0.0101$ is smaller by a factor of $156$ than
+$\ln(24/5)=1.5686$. In three dimensions the dimension-tracking
+route gives $63\,700\,992$. A two-dimensional argument of the present kind does not
+transfer without redoing the colouring and the tree count; applying the same chain
+formally to the cubic torus, which is not done here, would give heuristic thresholds
+of about $9.2\times10^{4}$ on even cubic tori. That number is not proved, and we
+therefore make no claim in three dimensions.
+
+Against the physical superexchange scale: the hopping-induced exchange scale that
+governs pair formation in the strong-coupling regime is of order $t^{2}/U$
+per bond, so a coordination-based estimate of the clustering
+onset is a few tens of $t^{2}/U$ on the square lattice. The ceiling $6000\,t^{2}/U$ is
+a rigorous upper bound and is about two orders of magnitude above that estimate. This
+comparison is heuristic in both directions: the superexchange scale is not a
+clustering temperature and the ceiling is not a physical transition temperature, the
+gap between them quantifies the remaining slack of the method rather than a
+discrepancy in the physics, and we draw no conclusion about where pair correlations
+actually decay.
+
+\section{Discussion and limitations}\label{sec:discussion}
+
+What is proved is the following. At temperatures above $6000\,t^{2}/U$ on any square
+torus, and above $4500\,t^{2}/U$ on tori of even side, equal-time on-site pair
+correlations decay exponentially in the torus distance with an explicit prefactor and
+an explicit rate, uniformly in the phonon frequency, in the torus side and in the
+chemical potential; the rows are uniformly summable, and the statement holds in
+canonical thermodynamic limits at interior density. The argument imposes no smallness
+condition on $t/U$ and does not assume the adiabatic limit.
+
+The limitations are equally explicit and each is a property of what is written here,
+not a conjecture.
+
+The constant is a bound on a clustering temperature of one correlator. It is not the
+critical temperature of anything, no phase transition is proved or excluded, and
+nothing here shows that the model is superconducting at any temperature. The decay
+rate is weak, $|\ln q|=0.01005$, so the bound should be read as a statement about
+uniform summability of the correlation matrix and about an exact threshold in
+$\beta t^{2}/U$, not as a quantitative decay estimate at moderate distance.
+
+The proof covers the two-dimensional square lattice. The colouring, the small-edge
+enumeration and the four-ary tree count are all specific to the square grid; the
+dimension-tracking paper \cite{rens2026b} treats the general cubic case by a different
+route with a much larger constant and a better decay ratio, and no dimension-uniform
+improvement follows from the present argument.
+
+The constants $6000$ and $4500$ are not optimal, and Section~\ref{sec:floors}
+quantifies how far the method can be pushed without a new idea: to about $5314$ and
+$4000$ by parameter optimisation, and no further while the coloured H\"older
+decoupling and the signless trajectory majorant are both retained. The certified
+failures at $C=5800$ on all tori and at $C=4300$ on even tori are failures of the
+particular tail test, and they are evidence about the scheme, not about the model.
+
+Finally, the certificate program proves arithmetic, not analysis. Its output asserts
+exact rational and symbolic identities and inequalities, including the interval
+bounds of Corollary~\ref{cor:pe} and the budget comparisons of
+Table~\ref{tab:audit}; it does not replace the operator inequalities of
+Lemmas~\ref{lem:bridge}, \ref{lem:holder} and \ref{lem:counting} or the estimates of
+Theorems~\ref{thm:bond} and~\ref{thm:weighted}, each of which has a written
+derivation in this paper.
+
+\section{Supporting material}\label{sec:supplement}
+
+The supplement is a single program of about eight hundred lines that recomputes, in
+exact rational and symbolic arithmetic, every finite witness quoted above; it needs
+no data file. Run without arguments it prints seven certified lines and exits
+zero only if all of them hold: the sixteen-state bond spectrum, the multiplicities
+and the two half-filling identities of Theorem~\ref{thm:bond}; the exact torus
+enumeration at $k\le6$, the four-ary coefficients \eqref{eq:raney} and the
+two-variable tree check; the $102$ certified intervals of Corollary~\ref{cor:pe}
+over the twenty-two class slots; the two budgets and the improvement factors of
+Theorem~\ref{thm:main}; and the ten points of the trade-off curve. It also verifies
+the five certified points of Theorem~\ref{thm:weighted}. Run with the flag
+\verb|--mutants| it repeats the same checks with one guarded claim corrupted at a
+time, twelve times, and exits zero only if every corrupted claim is rejected. Two of
+the corrupted claims are the ceilings $C=5800$ on all tori and $C=4300$ on even
+tori, which fail the tail test \eqref{eq:tailtest}; the others corrupt the bridge
+parity, a colour count, the tail colour on odd tori, one interval bound, the
+half-filling monotonicity, the even-torus class table, the canonical source weight,
+the pair prefactor, the weighted obstruction and the tree coefficients.
+
+The certified run and the mutant run were carried out on a clean copy of the
+supplement with uv 0.9.5, Python 3.13.9, sympy 1.14.0 and mpmath 1.3.0, and both
+exited zero. The manifest in the supplement lists the SHA-256 digests of its files;
+the certificate program has digest
+\texttt{3449ce2455935b29c03616cb3c3ed70018903d9ce32d59f0d1b27f93dfe7f62f}.
+
+\section*{AI assistance}
+
+The analytical results, the design of the estimates, and the final text are the
+author's responsibility. Independent proof reviews of the argument and of the
+certificate program were carried out by separate AI systems, whose comments led to
+several corrections recorded in the present version. The manuscript, its LaTeX
+source, and the certificate program were drafted and edited with AI assistance under
+the author's direction and review.
+\addcontentsline{toc}{section}{AI assistance}
+
+This preprint has not been peer reviewed.
+
+\appendix
+
+\section{The residual oscillator weight}\label{app:oscillator}
+
+Section~\ref{sec:langfirsov} uses the exact reduction of the oscillator trace to the
+contraction \eqref{eq:majorant}. This appendix repeats the statement in the units and
+notation of this paper, records the kernel that enters it, and derives the mode form
+\eqref{eq:phi}. Only positivity of the weight is used in the proof of
+Theorem~\ref{thm:main}, and no step below constrains $\Omega$.
+
+Throughout $\hbar=m=1$, so that $K=\Omega^{2}$, $U=F^{2}/\Omega^{2}$ and
+$\alpha=\alpha_{\mathrm{LF}}=\sqrt{U/(2\Omega)}$; the site label is dropped and
+$H_{\mathrm{ph}}=\Omega(b^{\dagger}b+\tfrac12)$. Let $n(u)\in\{0,1,2\}$ be the
+occupation of the site along a closed trajectory, that is a $\beta$-periodic,
+right continuous, piecewise constant function of the imaginary time
+$u\in[0,\beta)$ with jumps $c_j=n(u_j^{+})-n(u_j^{-})\in\{\pm1,\pm2\}$ at
+$0\le u_1<\dots<u_m<\beta$ and $\sum_jc_j=0$. Write
+$D^{c}(u)=\exp\bigl(c\alpha(e^{\Omega u}b^{\dagger}-e^{-\Omega u}b)\bigr)$ for the
+analytically continued displacement carried by a hop, and let
+$\langle\cdot\rangle_{\mathrm{ph}}$ be the trace over the oscillator normalized by
+$\mathrm{Tr}\,e^{-\beta H_{\mathrm{ph}}}$.
+
+\begin{lemma}[chronological displacement trace]\label{lem:chronological}
+Let
+\begin{equation}\label{eq:kernel}
+K_\beta(w)=\frac{U\Omega}{2}\,\frac{e^{-\Omega w}+e^{-\Omega(\beta-w)}}{1-e^{-\beta\Omega}}
+=\frac{U\Omega}{2}\,\frac{\cosh\bigl(\Omega(\tfrac{\beta}{2}-w)\bigr)}{\sinh(\beta\Omega/2)},
+\qquad 0\le w\le\beta,
+\end{equation}
+extended $\beta$-periodically to $w\in\mathbb{R}$, and
+\begin{equation}\label{eq:phip}
+\Phi_\beta[n]=\frac14\int_0^\beta\!\!\int_0^\beta\bigl(n(u)-n(v)\bigr)^2
+K_\beta(u-v)\,du\,dv .
+\end{equation}
+Then, the factors of the time-ordered product being ordered from right to left in
+increasing time,
+\begin{equation}\label{eq:chronological}
+\Bigl\langle\mathcal{T}\prod_{j}D^{c_j}(u_j)\Bigr\rangle_{\mathrm{ph}}
+=\exp\bigl(-\Phi_\beta[n]\bigr)
+=\exp\Bigl(\frac12\iint n(u)n(v)K_\beta(u-v)\,du\,dv-\frac{U}{2}\int_0^\beta n(u)^2du\Bigr).
+\end{equation}
+The kernel is positive and $\int_0^\beta K_\beta(w)\,dw=U$; consequently
+$0\le\exp(-\Phi_\beta[n])\le1$, with equality if and only if $n$ is constant.
+Finally, with the modes $n_s=\beta^{-1}\int_0^\beta n(u)e^{-i\omega_su}du$ and
+$\omega_s=2\pi s/\beta$,
+\begin{equation}\label{eq:phimode}
+\Phi_\beta[n]=\frac{\beta U}{2}\sum_{s\ne0}
+\frac{\omega_s^{2}}{\omega_s^{2}+\Omega^{2}}\,|n_s|^{2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The identity \eqref{eq:chronological} is proved in \cite[Section 3]{rens2026a}: the
+displacement factors are normal ordered with the Baker--Campbell--Hausdorff formula,
+the thermal occupations $\bar n=(e^{\beta\Omega}-1)^{-1}$ are summed as geometric
+series, and the kernel \eqref{eq:kernel} is the covariance of the oscillator at
+imaginary-time separation $w$. The two exponents in \eqref{eq:chronological}
+coincide by the mass identity derived below.
+
+For \eqref{eq:phimode} compute the Fourier coefficients
+$K_s=\int_0^\beta K_\beta(w)e^{-i\omega_sw}dw$ of the kernel on the circle of
+circumference $\beta$, so that $K_0$ is its mass. Integrating
+$e^{-(\Omega\pm i\omega_s)w}$ over $[0,\beta]$ gives
+\begin{equation}\label{eq:kernelmode}
+K_0=\frac{U\Omega}{2}\Bigl(\frac1\Omega+\frac1\Omega\Bigr)=U,
+\qquad
+K_s=\frac{U\Omega^{2}}{\Omega^{2}+\omega_s^{2}}\quad(s\ne0).
+\end{equation}
+Expand $n(u)=\sum_sn_se^{i\omega_su}$. Then $\int_0^\beta n^{2}du
+=\beta\sum_s|n_s|^{2}$ and $\iint n(u)n(v)K_\beta(u-v)\,dudv
+=\beta\sum_s|n_s|^{2}K_s$, so
+\begin{equation}
+\frac14\iint(n-n')^{2}K_\beta
+=\frac{U}{2}\int_0^\beta n^{2}du-\frac12\iint nK_\beta n
+=\frac{\beta}{2}\sum_s|n_s|^{2}\bigl(U-K_s\bigr)
+=\frac{\beta U}{2}\sum_{s\ne0}\frac{\omega_s^{2}}{\omega_s^{2}+\Omega^{2}}|n_s|^{2},
+\end{equation}
+where the first equality is the mass identity and the last uses $U-K_0=0$. By
+\eqref{eq:kernel} the kernel is a positive constant times a positive hyperbolic
+cosine, so the integral \eqref{eq:phip} is nonnegative and vanishes only if $n$ is
+constant, and \eqref{eq:kernelmode} is the mass identity $\int_0^\beta K_\beta=U$.
+\end{proof}
+
+Two remarks on the use made of the lemma. First, the weight is local in the site
+index, because the oscillator at $x$ is driven only by $n_x$; the product of the
+weights \eqref{eq:chronological} over the sites of a closed electronic trajectory is
+its phonon weight, and \eqref{eq:majorant} holds on any lattice, in particular on the
+square torus. Second, \eqref{eq:chronological} exhibits the weight as a product of the
+nonnegative oscillator functional $\exp\bigl(\tfrac12\iint nK_\beta n\bigr)$ and of
+the atomic attraction $\exp\bigl(-\tfrac U2\int n^{2}\bigr)$, and it is the positivity
+of the kernel in the dipole form \eqref{eq:phip}, not any smallness in $\Omega$ or in
+$\beta$, that makes the product at most one.
+
+\bibliographystyle{plain}
+\bibliography{refs}
+\end{document}
