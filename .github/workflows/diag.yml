@@ -1,0 +1,17 @@
+name: diag
+on: workflow_dispatch
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: |
+          set +e
+          python --version
+          python replay/replay.py > /tmp/r.out 2>/tmp/r.err; echo "default rc=$?"
+          python replay/replay.py --mutants > /tmp/m.out 2>/tmp/m.err; echo "mutants rc=$?"
+          echo "--- m.out"; cat -A /tmp/m.out | tail -25
+          echo "--- m.err"; cat /tmp/m.err
