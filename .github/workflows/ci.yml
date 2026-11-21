@@ -48,7 +48,13 @@ jobs:
           test "$(find . -type f | wc -l)" -eq "$tracked"
           sha256sum -c MANIFEST.sha256
           (cd replay && sha256sum -c MANIFEST.sha256)
+          set +e
           python replay/replay.py > /tmp/replay.out 2> /tmp/replay.err
+          echo "DEFAULT_EXIT=$?"
+          echo "DEFAULT_LINES=$(wc -l < /tmp/replay.out)"
+          echo "--- replay.err"; cat /tmp/replay.err
+          echo "--- replay.out"; cat /tmp/replay.out
+          set -e
           test ! -s /tmp/replay.err
           test "$(wc -l < /tmp/replay.out)" -eq 7
           for marker in \
