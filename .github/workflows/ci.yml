@@ -58,9 +58,9 @@ jobs:
             'C=6000' \
             'C=4500' \
             'S_tot<=0.105268 <= lnB>=0.107957' \
-            'UNCONDITIONAL_CURVE: 10 rational points' \
+            'UNCONDITIONAL_CURVE: 10 rational (mode, q_pair, C) points certified' \
             'WEIGHTED_2AB_CURVE: 5 rational points certified'; do
-            grep -qF "$marker" /tmp/replay.out
+            grep -qF "$marker" /tmp/replay.out || { echo "missing from the replay output: $marker"; exit 1; }
           done
           python replay/replay.py --mutants > /tmp/mutants.out 2> /tmp/mutants.err
           test ! -s /tmp/mutants.err
