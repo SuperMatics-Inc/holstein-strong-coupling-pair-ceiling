@@ -1,4 +1,5 @@
 # A strong-coupling ceiling of 6000 t^2/U for electronic pair correlations in the two-dimensional Holstein model
+Research record: [A strong-coupling ceiling of 6000 t²/U for electronic pair correlations in the two-dimensional Holstein model](https://supermatics.io/research/holstein-strong-coupling-pair-ceiling).
 
 Davis Rens, SuperMatics Inc. ([ORCID 0000-0001-5839-5197](https://orcid.org/0000-0001-5839-5197)).
 Version 1.0.0.
